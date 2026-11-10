@@ -149,7 +149,9 @@ impl ProxyPoolManager {
         timeout_secs: u64,
     ) -> Client {
         let mut builder = Client::builder()
-            // 无 Emulation 设置，走纯正的基础 TLS 指纹
+            // 与推理请求同一套指纹：OAuth / 额度如果走裸 rustls，
+            // 同一个账号会在 Google 侧出现两种 ClientHello。
+            .emulation(Emulation::Chrome123)
             .connect_timeout(Duration::from_secs(5))
             .pool_idle_timeout(Duration::from_secs(45))
             .timeout(Duration::from_secs(timeout_secs));

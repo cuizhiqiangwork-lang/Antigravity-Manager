@@ -140,16 +140,18 @@ fn create_base_client(timeout_secs: u64) -> Client {
     builder.build().unwrap_or_else(|_| Client::new())
 }
 
-/// Base client creation logic strictly WITHOUT JA3 Emulation (Pure Native)
+/// Base client creation logic WITH the same JA3 emulation as the inference path
 fn create_standard_client(timeout_secs: u64) -> Client {
-    // No .emulation(Emulation::Chrome123) here!
+    // 配套请求（登录、额度、项目解析）必须和推理用同一套 ClientHello。
+    // 这里原来是裸 rustls 指纹，Google 会看到同一账号先后出现两种 TLS 栈。
     let builder = Client::builder()
+        .emulation(Emulation::Chrome123)
         .connect_timeout(std::time::Duration::from_secs(5))
         .pool_idle_timeout(std::time::Duration::from_secs(45))
         .timeout(std::time::Duration::from_secs(timeout_secs));
     let builder = apply_upstream_proxy(builder, "HTTP standard client");
 
-    tracing::info!("Initialized Pure Native Standard Client");
+    tracing::info!("Initialized Standard Client with JA3 Impersonation (Chrome123)");
     builder.build().unwrap_or_else(|_| Client::new())
 }
 
