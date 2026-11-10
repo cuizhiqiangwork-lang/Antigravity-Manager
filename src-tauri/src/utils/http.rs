@@ -130,7 +130,7 @@ fn apply_upstream_proxy(builder: rquest::ClientBuilder, label: &str) -> rquest::
 /// Base client creation logic with JA3 Emulation
 fn create_base_client(timeout_secs: u64) -> Client {
     let builder = Client::builder()
-        .emulation(Emulation::Chrome123)
+        .emulation(Emulation::Chrome132)
         .connect_timeout(std::time::Duration::from_secs(5))
         .pool_idle_timeout(std::time::Duration::from_secs(45))
         .timeout(std::time::Duration::from_secs(timeout_secs));
@@ -145,7 +145,7 @@ fn create_standard_client(timeout_secs: u64) -> Client {
     // 配套请求（登录、额度、项目解析）必须和推理用同一套 ClientHello。
     // 这里原来是裸 rustls 指纹，Google 会看到同一账号先后出现两种 TLS 栈。
     let builder = Client::builder()
-        .emulation(Emulation::Chrome123)
+        .emulation(Emulation::Chrome132)
         .connect_timeout(std::time::Duration::from_secs(5))
         .pool_idle_timeout(std::time::Duration::from_secs(45))
         .timeout(std::time::Duration::from_secs(timeout_secs));

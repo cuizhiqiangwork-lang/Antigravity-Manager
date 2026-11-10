@@ -778,7 +778,7 @@ impl UpstreamClient {
         let timeout_cfg = crate::proxy::get_upload_timeout_config();
         let connect_secs = timeout_cfg.connect_secs.clamp(3, 120);
         let builder = Client::builder()
-            .emulation(rquest_util::Emulation::Chrome123)
+            .emulation(rquest_util::Emulation::Chrome132)
             // Connection settings (优化连接复用，减少建立开销)
             // [FIX #3763] 建连仅涉及 TCP/TLS 握手，默认 10s，兼顾跨国网络抖动与快速识别死端点
             .connect_timeout(Duration::from_secs(connect_secs))
