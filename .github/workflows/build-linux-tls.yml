@@ -5,6 +5,9 @@ on:
     branches: [tls-unify]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -41,3 +44,13 @@ jobs:
           name: antigravity-tools-linux-x86_64
           path: src-tauri/target/release/antigravity-tools
           if-no-files-found: error
+
+      - name: Publish binary to release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-tls-unify
+          name: TLS unify build (Chrome132)
+          body: |
+            Antigravity TLS 指纹统一 + Chrome132 对齐
+            二进制：antigravity-tools (linux x86_64)
+          files: src-tauri/target/release/antigravity-tools
